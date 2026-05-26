@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Guia Clever do mozaum <3</title>
+    <meta name="robots" content="noindex, nofollow">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Outfit', 'sans-serif'] },
+                    colors: {
+                        mocha: {
+                            50: '#f6f5f4', 100: '#e8e5e1', 200: '#d1cbc4', 300: '#b4aba0', 
+                            400: '#958879', 500: '#7e6f5f', 600: '#695a4c', 700: '#54473e', 
+                            800: '#463c35', 900: '#3a332d', accent: '#D4A373'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { background-color: #f6f5f4; color: #3a332d; -webkit-tap-highlight-color: transparent; }
+        .step-enter { animation: slideInRight 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+        .step-enter-reverse { animation: slideInLeft 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+        @keyframes slideInRight { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes slideInLeft { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes pulse-bg { 0%, 100% { background-color: #e8e5e1; } 50% { background-color: #d1cbc4; } }
+        .skeleton-bg { animation: pulse-bg 2s ease-in-out infinite; }
+        input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+    </style>
+</head>
+<body class="antialiased min-h-screen flex flex-col items-center pt-6 pb-12 px-4">
+
+    <div class="w-full max-w-md space-y-6">
+        
+        <!-- Header -->
+        <header class="relative w-full h-48 rounded-3xl overflow-hidden shadow-md">
+            <div id="hero-skeleton" class="absolute inset-0 skeleton-bg flex flex-col items-center justify-center">
+                <i data-lucide="camera" class="w-8 h-8 text-mocha-400 mb-2"></i>
+                <span class="text-mocha-500 text-xs font-semibold tracking-widest uppercase">A preparar imagem...</span>
+            </div>
+            <img id="hero-image" src="" alt="Clever Dripper" class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-1000">
+            <div class="absolute inset-0 bg-gradient-to-t from-mocha-900/80 to-transparent"></div>
+            <div class="absolute bottom-4 left-5">
+                <h1 class="text-white text-2xl font-bold tracking-tight">O Seu Clever</h1>
+                <p class="text-mocha-100 text-sm opacity-90">Um passo de cada vez.</p>
+            </div>
+        </header>
+
+        <!-- Calculadora -->
+        <section class="bg-white rounded-3xl p-5 shadow-sm border border-mocha-100">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-2">
+                    <div class="bg-mocha-50 p-1.5 rounded-lg"><i data-lucide="calculator" class="w-4 h-4 text-mocha-accent"></i></div>
+                    <h2 class="font-semibold text-mocha-800">Ajustar Receita</h2>
+                </div>
+                <span id="ratio-badge" class="text-[11px] font-bold bg-mocha-50 text-mocha-600 px-2.5 py-1 rounded-lg">7g / Copo Lagoinha</span>
+            </div>
+            
+            <div class="flex items-center gap-1 sm:gap-2">
+                <div class="flex-[1.2] bg-mocha-50 rounded-2xl p-2.5 border border-transparent focus-within:border-mocha-200 transition-all flex flex-col items-center">
+                    <select id="waterUnitSelect" class="bg-transparent text-[9px] font-bold text-mocha-400 uppercase tracking-widest mb-2 outline-none cursor-pointer text-center w-full">
+                        <option value="copo">COPOS LAGOINHA ▼</option>
+                        <option value="ml">ÁGUA (ML) ▼</option>
+                    </select>
+                    <div class="flex items-center justify-between w-full max-w-[120px] gap-1">
+                        <button id="btnWaterMinus" class="w-8 h-8 flex items-center justify-center rounded-full bg-mocha-200 text-mocha-700 hover:bg-mocha-300 active:scale-90 transition-all"><i data-lucide="minus" class="w-4 h-4"></i></button>
+                        <input type="number" id="waterInput" value="1" min="0" step="any" class="w-12 bg-transparent text-mocha-900 text-xl font-bold focus:outline-none text-center">
+                        <button id="btnWaterPlus" class="w-8 h-8 flex items-center justify-center rounded-full bg-mocha-200 text-mocha-700 hover:bg-mocha-300 active:scale-90 transition-all"><i data-lucide="plus" class="w-4 h-4"></i></button>
+                    </div>
+                </div>
+                <i data-lucide="arrow-right-left" class="w-4 h-4 text-mocha-300 shrink-0"></i>
+                <div class="flex-1 bg-mocha-50 rounded-2xl p-2.5 border border-transparent focus-within:border-mocha-200 transition-all flex flex-col items-center">
+                    <label class="block text-[9px] font-bold text-mocha-400 uppercase tracking-widest mb-2 text-center w-full">Café (g)</label>
+                    <div class="flex items-center justify-between w-full max-w-[120px] gap-1">
+                        <button id="btnCoffeeMinus" class="w-8 h-8 flex items-center justify-center rounded-full bg-mocha-200 text-mocha-700 hover:bg-mocha-300 active:scale-90 transition-all"><i data-lucide="minus" class="w-4 h-4"></i></button>
+                        <input type="number" id="coffeeInput" value="7" min="0" step="any" class="w-12 bg-transparent text-mocha-900 text-xl font-bold focus:outline-none text-center">
+                        <button id="btnCoffeePlus" class="w-8 h-8 flex items-center justify-center rounded-full bg-mocha-200 text-mocha-700 hover:bg-mocha-300 active:scale-90 transition-all"><i data-lucide="plus" class="w-4 h-4"></i></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Wizard -->
+        <section class="bg-white rounded-3xl shadow-lg border border-mocha-100 overflow-hidden relative">
+            <div class="h-1.5 w-full bg-mocha-50"><div id="progress-bar" class="h-full bg-mocha-accent transition-all duration-300" style="width: 10%;"></div></div>
+            <div class="p-8 pb-6 min-h-[360px] flex flex-col select-none">
+                <div class="flex justify-between items-center mb-6"><span id="step-counter" class="text-sm font-bold text-mocha-400 tracking-widest uppercase">Passo 1 de 10</span></div>
+                <div id="step-content" class="flex-1 flex flex-col items-center justify-center text-center step-enter"></div>
+                <div class="mt-6 flex flex-col items-center w-full">
+                    <p class="text-[10px] text-mocha-300 font-bold tracking-[0.2em] uppercase mb-3 flex items-center gap-2"><i data-lucide="move-horizontal" class="w-3 h-3"></i> Deslize no ecrã</p>
+                    <div class="flex w-full gap-2">
+                        <button id="btn-prev" class="w-14 h-14 flex items-center justify-center text-mocha-400 bg-mocha-50 disabled:opacity-30 transition-colors rounded-2xl hover:bg-mocha-100 active:scale-95" disabled><i data-lucide="chevron-left" class="w-6 h-6"></i></button>
+                        <button id="btn-next" class="flex-1 flex items-center justify-center gap-2 bg-mocha-900 text-white rounded-2xl font-bold transition-transform active:scale-95 shadow-md text-lg"><span id="btn-next-text">Próximo</span><i id="btn-next-icon" data-lucide="chevron-right" class="w-6 h-6"></i></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        lucide.createIcons();
+        
+        // Elementos globais
+        const waterInput = document.getElementById('waterInput');
+        const coffeeInput = document.getElementById('coffeeInput');
+        const waterUnitSelect = document.getElementById('waterUnitSelect');
+        const ratioBadge = document.getElementById('ratio-badge');
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
+        const btnNextText = document.getElementById('btn-next-text');
+        const btnNextIcon = document.getElementById('btn-next-icon');
+        const stepContent = document.getElementById('step-content');
+        const stepCounter = document.getElementById('step-counter');
+        const progressBar = document.getElementById('progress-bar');
+
+        // Lógica de cálculo
+        let waterStep = 0.5;
+
+        function updateCoffee() {
+            const val = parseFloat(waterInput.value) || 0;
+            if (waterUnitSelect.value === 'copo') coffeeInput.value = (Math.round((val * 7) * 10) / 10).toString();
+            else coffeeInput.value = (Math.round((val * 0.07) * 10) / 10).toString();
+            if(steps[currentStep] && steps[currentStep].dynamic) renderCurrentStep('forward');
+        }
+
+        function updateWater() {
+            const coffee = parseFloat(coffeeInput.value) || 0;
+            if (waterUnitSelect.value === 'copo') waterInput.value = (Math.round((coffee / 7) * 10) / 10).toString();
+            else waterInput.value = Math.round(coffee / 0.07).toString();
+            if(steps[currentStep] && steps[currentStep].dynamic) renderCurrentStep('forward');
+        }
+
+        waterInput.addEventListener('input', updateCoffee); 
+        coffeeInput.addEventListener('input', updateWater);
+        document.getElementById('btnWaterMinus').addEventListener('click', () => { waterInput.value = Math.max(0, (parseFloat(waterInput.value)||0) - waterStep); updateCoffee(); });
+        document.getElementById('btnWaterPlus').addEventListener('click', () => { waterInput.value = (parseFloat(waterInput.value)||0) + waterStep; updateCoffee(); });
+        document.getElementById('btnCoffeeMinus').addEventListener('click', () => { coffeeInput.value = Math.max(0, (parseFloat(coffeeInput.value)||0) - 0.5); updateWater(); });
+        document.getElementById('btnCoffeePlus').addEventListener('click', () => { coffeeInput.value = (parseFloat(coffeeInput.value)||0) + 0.5; updateWater(); });
+
+        waterUnitSelect.addEventListener('change', () => {
+            const currentVal = parseFloat(waterInput.value) || 0;
+            if (waterUnitSelect.value === 'copo') {
+                waterInput.value = Math.round((currentVal / 190) * 10) / 10;
+                waterStep = 0.5;
+                ratioBadge.textContent = "7g / Copo Lagoinha";
+            } else {
+                waterInput.value = Math.round(currentVal * 190);
+                waterStep = 10;
+                ratioBadge.textContent = "7g / 100ml";
+            }
+            updateCoffee();
+        });
+
+        const steps = [
+            { icon: 'thermometer', title: 'Água a ferver', text: 'Coloque a água para aquecer (cerca de 96°C).' },
+            { icon: 'scale', title: 'Pese o café', dynamic: () => `Meça <span class="text-mocha-accent font-bold text-2xl mx-1">${coffeeInput.value || 0}g</span> de café.` },
+            { icon: 'settings-2', title: 'Moagem', text: 'Moa o café com espessura média (sal grosso).' },
+            { icon: 'droplets', title: 'Escalde o filtro', text: 'Jogue água quente para tirar o gosto de papel.' },
+            { icon: 'trash-2', title: 'Descarte a água', text: 'Esvazie o Clever.' },
+            { icon: 'glass-water', title: 'Adicione a água', dynamic: () => `Coloque <span class="text-mocha-accent font-bold text-2xl mx-1">${waterInput.value || 0} ${waterUnitSelect.value === 'copo' ? 'copo(s)' : 'ml'}</span> de água.` },
+            { icon: 'bean', title: 'Adicione o café', text: 'Despeje o café. Não mexa!' },
+            { icon: 'timer', title: 'Aguarde', text: 'Aguarde de 2 a 3 minutos.' },
+            { icon: 'arrow-down-to-line', title: 'Extração', text: 'Coloque o Clever sobre a sua caneca.' },
+            { icon: 'heart', title: 'Pronto!', text: 'Aproveite o seu café. ☕' }
+        ];
+
+        let currentStep = 0;
+        function renderCurrentStep(dir) {
+            const step = steps[currentStep];
+            stepContent.innerHTML = `<div class="w-20 h-20 rounded-full bg-mocha-50 flex items-center justify-center text-mocha-accent mb-6"><i data-lucide="${step.icon}" class="w-10 h-10"></i></div><h3 class="text-2xl font-bold text-mocha-900 mb-3">${step.title}</h3><p class="text-mocha-600 text-lg leading-relaxed max-w-[280px]">${step.dynamic ? step.dynamic() : step.text}</p>`;
+            document.getElementById('step-counter').textContent = `Passo ${currentStep + 1} de ${steps.length}`;
+            progressBar.style.width = `${((currentStep + 1) / steps.length) * 100}%`;
+            btnPrev.disabled = currentStep === 0;
+            const isLast = currentStep === steps.length - 1;
+            btnNextText.textContent = isLast ? 'Recomeçar' : 'Próximo';
+            btnNextIcon.setAttribute('data-lucide', isLast ? 'rotate-ccw' : 'chevron-right');
+            lucide.createIcons();
+        }
+
+        btnNext.addEventListener('click', () => { if (currentStep < steps.length - 1) { currentStep++; renderCurrentStep('forward'); } else { currentStep = 0; renderCurrentStep('reverse'); } });
+        btnPrev.addEventListener('click', () => { if (currentStep > 0) { currentStep--; renderCurrentStep('reverse'); } });
+        
+        let tx = 0;
+        document.addEventListener('touchstart', e => tx = e.changedTouches[0].screenX);
+        document.addEventListener('touchend', e => { let ex = e.changedTouches[0].screenX; if (ex < tx - 50) btnNext.click(); else if (ex > tx + 50 && currentStep > 0) btnPrev.click(); });
+        
+        window.onload = () => { renderCurrentStep('forward'); 
+            const imgEl = document.getElementById('hero-image'); imgEl.src = "https://images.unsplash.com/photo-1497935586351-b67a49e012bf?auto=format&fit=crop&q=80&w=800";
+            imgEl.onload = () => { imgEl.classList.remove('opacity-0'); document.getElementById('hero-skeleton').classList.add('hidden'); };
+        };
+    </script>
+</body>
+</html>
