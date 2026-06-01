@@ -1,25 +1,39 @@
 <!DOCTYPE html>
-<html lang="pt-PT">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Guia Clever do mozaum <3</title>
     <meta name="robots" content="noindex, nofollow">
+    <title>Guia Clever Focado</title>
     
+    <!-- Bibliotecas e Estilos -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Biblioteca de Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: { sans: ['Outfit', 'sans-serif'] },
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
                     colors: {
                         mocha: {
-                            50: '#f6f5f4', 100: '#e8e5e1', 200: '#d1cbc4', 300: '#b4aba0', 
-                            400: '#958879', 500: '#7e6f5f', 600: '#695a4c', 700: '#54473e', 
-                            800: '#463c35', 900: '#3a332d', accent: '#D4A373'
+                            50: '#f6f5f4',
+                            100: '#e8e5e1',
+                            200: '#d1cbc4',
+                            300: '#b4aba0',
+                            400: '#958879',
+                            500: '#7e6f5f',
+                            600: '#695a4c',
+                            700: '#54473e',
+                            800: '#463c35',
+                            900: '#3a332d',
+                            accent: '#D4A373' // Caramelo quente
                         }
                     }
                 }
@@ -28,176 +42,495 @@
     </script>
 
     <style>
-        body { background-color: #f6f5f4; color: #3a332d; -webkit-tap-highlight-color: transparent; }
+        body {
+            background-color: #f6f5f4;
+            color: #3a332d;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Animações dos cartões */
         .step-enter { animation: slideInRight 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
         .step-enter-reverse { animation: slideInLeft 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
-        @keyframes slideInRight { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
-        @keyframes slideInLeft { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
-        @keyframes pulse-bg { 0%, 100% { background-color: #e8e5e1; } 50% { background-color: #d1cbc4; } }
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Loading Skeleton */
+        @keyframes pulse-bg {
+            0%, 100% { background-color: #e8e5e1; }
+            50% { background-color: #d1cbc4; }
+        }
         .skeleton-bg { animation: pulse-bg 2s ease-in-out infinite; }
-        input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        
+        /* Limpeza de inputs visuais */
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
     </style>
 </head>
-<body class="antialiased min-h-screen flex flex-col items-center pt-6 pb-12 px-4">
+<body class="antialiased min-h-screen flex flex-col items-center pt-6 pb-12 px-4 relative overflow-x-hidden">
 
     <div class="w-full max-w-md space-y-6">
         
-        <!-- Header -->
+        <!-- Cabeçalho (Header com IA) -->
         <header class="relative w-full h-48 rounded-3xl overflow-hidden shadow-md">
             <div id="hero-skeleton" class="absolute inset-0 skeleton-bg flex flex-col items-center justify-center">
                 <i data-lucide="camera" class="w-8 h-8 text-mocha-400 mb-2"></i>
-                <span class="text-mocha-500 text-xs font-semibold tracking-widest uppercase">A preparar imagem...</span>
+                <span class="text-mocha-500 text-xs font-semibold tracking-widest uppercase">Preparando imagem...</span>
             </div>
             <img id="hero-image" src="" alt="Clever Dripper" class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-1000">
             <div class="absolute inset-0 bg-gradient-to-t from-mocha-900/80 to-transparent"></div>
-            <div class="absolute bottom-4 left-5">
+            <div class="absolute bottom-4 left-5 z-10">
                 <h1 class="text-white text-2xl font-bold tracking-tight">O Seu Clever</h1>
                 <p class="text-mocha-100 text-sm opacity-90">Um passo de cada vez.</p>
             </div>
         </header>
 
-        <!-- Calculadora -->
-        <section class="bg-white rounded-3xl p-5 shadow-sm border border-mocha-100">
+        <!-- Calculadora de Receita -->
+        <section class="bg-white rounded-3xl p-5 shadow-sm border border-mocha-100 relative z-20">
             <div class="flex items-center justify-between mb-4">
                 <div class="flex items-center gap-2">
-                    <div class="bg-mocha-50 p-1.5 rounded-lg"><i data-lucide="calculator" class="w-4 h-4 text-mocha-accent"></i></div>
+                    <div class="bg-mocha-50 p-1.5 rounded-lg">
+                        <i data-lucide="calculator" class="w-4 h-4 text-mocha-accent"></i>
+                    </div>
                     <h2 class="font-semibold text-mocha-800">Ajustar Receita</h2>
                 </div>
-                <span id="ratio-badge" class="text-[11px] font-bold bg-mocha-50 text-mocha-600 px-2.5 py-1 rounded-lg">7g / Copo Lagoinha</span>
+                <span id="ratio-badge" class="text-[11px] font-bold bg-mocha-50 text-mocha-600 px-2.5 py-1 rounded-lg">
+                    14g / Copo Lagoinha
+                </span>
             </div>
             
             <div class="flex items-center gap-1 sm:gap-2">
-                <div class="flex-[1.2] bg-mocha-50 rounded-2xl p-2.5 border border-transparent focus-within:border-mocha-200 transition-all flex flex-col items-center">
-                    <select id="waterUnitSelect" class="bg-transparent text-[9px] font-bold text-mocha-400 uppercase tracking-widest mb-2 outline-none cursor-pointer text-center w-full">
+                <!-- Água -->
+                <div class="flex-[1.2] bg-mocha-50 rounded-2xl p-2.5 sm:p-3 border border-transparent focus-within:border-mocha-200 transition-all flex flex-col justify-center items-center">
+                    <select id="waterUnitSelect" class="bg-transparent text-[9px] sm:text-[10px] font-bold text-mocha-400 uppercase tracking-widest mb-2 outline-none cursor-pointer appearance-none text-center w-full">
                         <option value="copo">COPOS LAGOINHA ▼</option>
                         <option value="ml">ÁGUA (ML) ▼</option>
                     </select>
                     <div class="flex items-center justify-between w-full max-w-[120px] gap-1">
-                        <button id="btnWaterMinus" class="w-8 h-8 flex items-center justify-center rounded-full bg-mocha-200 text-mocha-700 hover:bg-mocha-300 active:scale-90 transition-all"><i data-lucide="minus" class="w-4 h-4"></i></button>
-                        <input type="number" id="waterInput" value="1" min="0" step="any" class="w-12 bg-transparent text-mocha-900 text-xl font-bold focus:outline-none text-center">
-                        <button id="btnWaterPlus" class="w-8 h-8 flex items-center justify-center rounded-full bg-mocha-200 text-mocha-700 hover:bg-mocha-300 active:scale-90 transition-all"><i data-lucide="plus" class="w-4 h-4"></i></button>
+                        <button id="btnWaterMinus" class="w-8 h-8 flex shrink-0 items-center justify-center rounded-full bg-mocha-200 text-mocha-700 hover:bg-mocha-300 active:scale-90 transition-all">
+                            <i data-lucide="minus" class="w-4 h-4"></i>
+                        </button>
+                        <input type="number" id="waterInput" value="1" min="0" step="any" class="w-12 bg-transparent text-mocha-900 text-xl font-bold focus:outline-none focus:text-mocha-accent transition-colors text-center px-0">
+                        <button id="btnWaterPlus" class="w-8 h-8 flex shrink-0 items-center justify-center rounded-full bg-mocha-200 text-mocha-700 hover:bg-mocha-300 active:scale-90 transition-all">
+                            <i data-lucide="plus" class="w-4 h-4"></i>
+                        </button>
                     </div>
+                    <!-- Etiqueta de ml (apenas visível quando em copo) -->
+                    <div id="waterEquivalent" class="text-[10px] font-bold text-mocha-400 mt-1.5 h-3 tracking-wide">≈ 190ml</div>
                 </div>
-                <i data-lucide="arrow-right-left" class="w-4 h-4 text-mocha-300 shrink-0"></i>
-                <div class="flex-1 bg-mocha-50 rounded-2xl p-2.5 border border-transparent focus-within:border-mocha-200 transition-all flex flex-col items-center">
-                    <label class="block text-[9px] font-bold text-mocha-400 uppercase tracking-widest mb-2 text-center w-full">Café (g)</label>
+                
+                <i data-lucide="arrow-right-left" class="w-4 h-4 sm:w-5 sm:h-5 text-mocha-300 shrink-0"></i>
+                
+                <!-- Café -->
+                <div class="flex-1 bg-mocha-50 rounded-2xl p-2.5 sm:p-3 border border-transparent focus-within:border-mocha-200 transition-all flex flex-col justify-center items-center">
+                    <label class="block text-[9px] sm:text-[10px] font-bold text-mocha-400 uppercase tracking-widest mb-2 truncate text-center w-full">Café (g)</label>
                     <div class="flex items-center justify-between w-full max-w-[120px] gap-1">
-                        <button id="btnCoffeeMinus" class="w-8 h-8 flex items-center justify-center rounded-full bg-mocha-200 text-mocha-700 hover:bg-mocha-300 active:scale-90 transition-all"><i data-lucide="minus" class="w-4 h-4"></i></button>
-                        <input type="number" id="coffeeInput" value="7" min="0" step="any" class="w-12 bg-transparent text-mocha-900 text-xl font-bold focus:outline-none text-center">
-                        <button id="btnCoffeePlus" class="w-8 h-8 flex items-center justify-center rounded-full bg-mocha-200 text-mocha-700 hover:bg-mocha-300 active:scale-90 transition-all"><i data-lucide="plus" class="w-4 h-4"></i></button>
+                        <button id="btnCoffeeMinus" class="w-8 h-8 flex shrink-0 items-center justify-center rounded-full bg-mocha-200 text-mocha-700 hover:bg-mocha-300 active:scale-90 transition-all">
+                            <i data-lucide="minus" class="w-4 h-4"></i>
+                        </button>
+                        <input type="number" id="coffeeInput" value="14" min="0" step="any" class="w-12 bg-transparent text-mocha-900 text-xl font-bold focus:outline-none focus:text-mocha-accent transition-colors text-center px-0">
+                        <button id="btnCoffeePlus" class="w-8 h-8 flex shrink-0 items-center justify-center rounded-full bg-mocha-200 text-mocha-700 hover:bg-mocha-300 active:scale-90 transition-all">
+                            <i data-lucide="plus" class="w-4 h-4"></i>
+                        </button>
                     </div>
+                    <!-- Espaçador para manter altura igualitária -->
+                    <div class="h-3 mt-1.5"></div>
                 </div>
             </div>
         </section>
 
-        <!-- Wizard -->
-        <section class="bg-white rounded-3xl shadow-lg border border-mocha-100 overflow-hidden relative">
-            <div class="h-1.5 w-full bg-mocha-50"><div id="progress-bar" class="h-full bg-mocha-accent transition-all duration-300" style="width: 10%;"></div></div>
+        <!-- Wizard Passo a Passo -->
+        <section id="wizard-section" class="bg-white rounded-3xl shadow-lg border border-mocha-100 overflow-hidden relative z-20">
+            <div class="h-1.5 w-full bg-mocha-50">
+                <div id="progress-bar" class="h-full bg-mocha-accent transition-all duration-300 ease-out" style="width: 10%;"></div>
+            </div>
+
             <div class="p-8 pb-6 min-h-[360px] flex flex-col select-none">
-                <div class="flex justify-between items-center mb-6"><span id="step-counter" class="text-sm font-bold text-mocha-400 tracking-widest uppercase">Passo 1 de 10</span></div>
+                <div class="flex justify-between items-center mb-6">
+                    <span id="step-counter" class="text-sm font-bold text-mocha-400 tracking-widest uppercase">Passo 1 de 10</span>
+                </div>
+
+                <!-- Conteúdo Renderizado -->
                 <div id="step-content" class="flex-1 flex flex-col items-center justify-center text-center step-enter"></div>
+
+                <!-- Controlos de Navegação -->
                 <div class="mt-6 flex flex-col items-center w-full">
-                    <p class="text-[10px] text-mocha-300 font-bold tracking-[0.2em] uppercase mb-3 flex items-center gap-2"><i data-lucide="move-horizontal" class="w-3 h-3"></i> Deslize no ecrã</p>
+                    <p class="text-[10px] text-mocha-300 font-bold tracking-[0.2em] uppercase mb-3 flex items-center gap-2">
+                        <i data-lucide="move-horizontal" class="w-3 h-3"></i> Deslize na tela
+                    </p>
                     <div class="flex w-full gap-2">
-                        <button id="btn-prev" class="w-14 h-14 flex items-center justify-center text-mocha-400 bg-mocha-50 disabled:opacity-30 transition-colors rounded-2xl hover:bg-mocha-100 active:scale-95" disabled><i data-lucide="chevron-left" class="w-6 h-6"></i></button>
-                        <button id="btn-next" class="flex-1 flex items-center justify-center gap-2 bg-mocha-900 text-white rounded-2xl font-bold transition-transform active:scale-95 shadow-md text-lg"><span id="btn-next-text">Próximo</span><i id="btn-next-icon" data-lucide="chevron-right" class="w-6 h-6"></i></button>
+                        <button id="btn-prev" class="w-14 h-14 flex items-center justify-center text-mocha-400 bg-mocha-50 disabled:opacity-30 disabled:cursor-not-allowed transition-colors rounded-2xl hover:bg-mocha-100 hover:text-mocha-800 active:scale-95">
+                            <i data-lucide="chevron-left" class="w-6 h-6"></i>
+                        </button>
+                        <button id="btn-next" class="flex-1 flex items-center justify-center gap-2 bg-mocha-900 text-white rounded-2xl font-bold hover:bg-mocha-800 transition-transform active:scale-95 shadow-md text-lg">
+                            <span id="btn-next-text">Próximo</span>
+                            <i id="btn-next-icon" data-lucide="chevron-right" class="w-6 h-6"></i>
+                        </button>
                     </div>
                 </div>
             </div>
         </section>
+        
     </div>
 
     <script>
         lucide.createIcons();
-        
-        // Elementos globais
+
+        // Variáveis da DOM
         const waterInput = document.getElementById('waterInput');
         const coffeeInput = document.getElementById('coffeeInput');
         const waterUnitSelect = document.getElementById('waterUnitSelect');
         const ratioBadge = document.getElementById('ratio-badge');
-        const btnPrev = document.getElementById('btn-prev');
-        const btnNext = document.getElementById('btn-next');
-        const btnNextText = document.getElementById('btn-next-text');
-        const btnNextIcon = document.getElementById('btn-next-icon');
-        const stepContent = document.getElementById('step-content');
-        const stepCounter = document.getElementById('step-counter');
-        const progressBar = document.getElementById('progress-bar');
+        const waterEquivalent = document.getElementById('waterEquivalent');
+        
+        const btnWaterMinus = document.getElementById('btnWaterMinus');
+        const btnWaterPlus = document.getElementById('btnWaterPlus');
+        const btnCoffeeMinus = document.getElementById('btnCoffeeMinus');
+        const btnCoffeePlus = document.getElementById('btnCoffeePlus');
 
-        // Lógica de cálculo
+        // Constantes da Receita
+        const RATIO = 14 / 190; // 14g de café para cada 190ml
         let waterStep = 0.5;
+        let coffeeStep = 0.5;
+        let currentStep = 0;
+
+        // -- WAKE LOCK API (Manter tela ligada) --
+        let wakeLock = null;
+        async function requestWakeLock() {
+            if ('wakeLock' in navigator && wakeLock === null) {
+                try {
+                    wakeLock = await navigator.wakeLock.request('screen');
+                } catch (err) {
+                    console.log('Wake Lock falhou:', err.message);
+                }
+            }
+        }
+        // Solicita ao primeiro toque do usuário (restrição de segurança dos navegadores)
+        document.body.addEventListener('click', requestWakeLock, { once: true });
+        document.body.addEventListener('touchstart', requestWakeLock, { once: true });
+
+        // -- LÓGICA DA CALCULADORA --
+        function getWaterInMl() {
+            const val = parseFloat(waterInput.value) || 0;
+            return waterUnitSelect.value === 'copo' ? val * 190 : val;
+        }
+
+        function updateEquivalentDisplay() {
+            if (waterUnitSelect.value === 'copo') {
+                const ml = Math.round(getWaterInMl());
+                waterEquivalent.textContent = `≈ ${ml}ml`;
+            } else {
+                waterEquivalent.textContent = '';
+            }
+        }
 
         function updateCoffee() {
-            const val = parseFloat(waterInput.value) || 0;
-            if (waterUnitSelect.value === 'copo') coffeeInput.value = (Math.round((val * 7) * 10) / 10).toString();
-            else coffeeInput.value = (Math.round((val * 0.07) * 10) / 10).toString();
-            if(steps[currentStep] && steps[currentStep].dynamic) renderCurrentStep('forward');
+            const waterMl = getWaterInMl();
+            if (waterMl >= 0) {
+                const coffee = waterMl * RATIO;
+                coffeeInput.value = (Math.round(coffee * 10) / 10).toString();
+            } else {
+                coffeeInput.value = '';
+            }
+            updateEquivalentDisplay();
+            refreshDynamicStep();
         }
 
         function updateWater() {
-            const coffee = parseFloat(coffeeInput.value) || 0;
-            if (waterUnitSelect.value === 'copo') waterInput.value = (Math.round((coffee / 7) * 10) / 10).toString();
-            else waterInput.value = Math.round(coffee / 0.07).toString();
-            if(steps[currentStep] && steps[currentStep].dynamic) renderCurrentStep('forward');
+            const coffee = parseFloat(coffeeInput.value);
+            if (!isNaN(coffee) && coffee >= 0) {
+                const waterMl = coffee / RATIO;
+                if (waterUnitSelect.value === 'copo') {
+                    const val = Math.round((waterMl / 190) * 10) / 10;
+                    waterInput.value = val % 1 !== 0 ? val.toFixed(1) : val;
+                } else {
+                    waterInput.value = Math.round(waterMl).toString();
+                }
+            } else {
+                waterInput.value = '';
+            }
+            updateEquivalentDisplay();
+            refreshDynamicStep();
         }
 
-        waterInput.addEventListener('input', updateCoffee); 
-        coffeeInput.addEventListener('input', updateWater);
-        document.getElementById('btnWaterMinus').addEventListener('click', () => { waterInput.value = Math.max(0, (parseFloat(waterInput.value)||0) - waterStep); updateCoffee(); });
-        document.getElementById('btnWaterPlus').addEventListener('click', () => { waterInput.value = (parseFloat(waterInput.value)||0) + waterStep; updateCoffee(); });
-        document.getElementById('btnCoffeeMinus').addEventListener('click', () => { coffeeInput.value = Math.max(0, (parseFloat(coffeeInput.value)||0) - 0.5); updateWater(); });
-        document.getElementById('btnCoffeePlus').addEventListener('click', () => { coffeeInput.value = (parseFloat(coffeeInput.value)||0) + 0.5; updateWater(); });
-
-        waterUnitSelect.addEventListener('change', () => {
-            const currentVal = parseFloat(waterInput.value) || 0;
-            if (waterUnitSelect.value === 'copo') {
-                waterInput.value = Math.round((currentVal / 190) * 10) / 10;
-                waterStep = 0.5;
-                ratioBadge.textContent = "7g / Copo Lagoinha";
-            } else {
-                waterInput.value = Math.round(currentVal * 190);
-                waterStep = 10;
-                ratioBadge.textContent = "7g / 100ml";
+        function refreshDynamicStep() {
+            if(typeof steps !== 'undefined' && steps[currentStep] && steps[currentStep].dynamic) {
+                renderCurrentStep('forward');
             }
+        }
+
+        waterInput.addEventListener('input', updateCoffee);
+        coffeeInput.addEventListener('input', updateWater);
+
+        // Botões da Calculadora
+        btnWaterMinus.addEventListener('click', () => {
+            let val = parseFloat(waterInput.value) || 0;
+            if (val > 0) {
+                val = Math.max(0, val - waterStep);
+                waterInput.value = val % 1 !== 0 ? val.toFixed(1) : val;
+                updateCoffee();
+            }
+        });
+
+        btnWaterPlus.addEventListener('click', () => {
+            let val = parseFloat(waterInput.value) || 0;
+            val += waterStep;
+            waterInput.value = val % 1 !== 0 ? val.toFixed(1) : val;
             updateCoffee();
         });
 
+        btnCoffeeMinus.addEventListener('click', () => {
+            let val = parseFloat(coffeeInput.value) || 0;
+            if (val > 0) {
+                val = Math.max(0, val - coffeeStep);
+                coffeeInput.value = val % 1 !== 0 ? val.toFixed(1) : val;
+                updateWater();
+            }
+        });
+
+        btnCoffeePlus.addEventListener('click', () => {
+            let val = parseFloat(coffeeInput.value) || 0;
+            val += coffeeStep;
+            coffeeInput.value = val % 1 !== 0 ? val.toFixed(1) : val;
+            updateWater();
+        });
+
+        // Troca de unidade de medida (Converte os valores na hora)
+        waterUnitSelect.addEventListener('change', () => {
+            const currentVal = parseFloat(waterInput.value) || 0;
+            if (waterUnitSelect.value === 'copo') {
+                // Converte de ML para Copo
+                const val = Math.round((currentVal / 190) * 10) / 10;
+                waterInput.value = val % 1 !== 0 ? val.toFixed(1) : val;
+                waterStep = 0.5;
+                ratioBadge.textContent = "14g / Copo Lagoinha";
+            } else {
+                // Converte de Copo para ML
+                waterInput.value = Math.round(currentVal * 190).toString();
+                waterStep = 10; // Avança de 10 em 10 ml
+                ratioBadge.textContent = "7g / 100ml";
+            }
+            updateCoffee();
+            updateEquivalentDisplay();
+        });
+
+        // -- DADOS DOS PASSOS E CRONÔMETRO --
+        let timerInterval;
+        let timeLeft = 150; // 2 minutos e meio em segundos
+        let isTimerRunning = false;
+
         const steps = [
-            { icon: 'thermometer', title: 'Água a ferver', text: 'Coloque a água para aquecer (cerca de 96°C).' },
-            { icon: 'scale', title: 'Pese o café', dynamic: () => `Meça <span class="text-mocha-accent font-bold text-2xl mx-1">${coffeeInput.value || 0}g</span> de café.` },
-            { icon: 'settings-2', title: 'Moagem', text: 'Moa o café com espessura média (sal grosso).' },
-            { icon: 'droplets', title: 'Escalde o filtro', text: 'Jogue água quente para tirar o gosto de papel.' },
-            { icon: 'trash-2', title: 'Descarte a água', text: 'Esvazie o Clever.' },
-            { icon: 'glass-water', title: 'Adicione a água', dynamic: () => `Coloque <span class="text-mocha-accent font-bold text-2xl mx-1">${waterInput.value || 0} ${waterUnitSelect.value === 'copo' ? 'copo(s)' : 'ml'}</span> de água.` },
-            { icon: 'bean', title: 'Adicione o café', text: 'Despeje o café. Não mexa!' },
-            { icon: 'timer', title: 'Aguarde', text: 'Aguarde de 2 a 3 minutos.' },
-            { icon: 'arrow-down-to-line', title: 'Extração', text: 'Coloque o Clever sobre a sua caneca.' },
-            { icon: 'heart', title: 'Pronto!', text: 'Aproveite o seu café. ☕' }
+            { icon: 'thermometer', title: 'Água a ferver', text: 'Coloque a água para aquecer até ferver (ou cerca de 96°C).' },
+            { icon: 'scale', title: 'Pese os grãos', dynamic: () => `Meça <span class="text-mocha-accent font-bold text-2xl mx-1">${coffeeInput.value || 0}g</span> de café.` },
+            { icon: 'settings-2', title: 'Moagem', text: 'Moa o café com uma espessura média (parecido com sal grosso).' },
+            { icon: 'droplets', title: 'Escalde o filtro', text: 'Coloque o papel no Clever e jogue água quente para tirar o gosto de papel e aquecer o equipamento.' },
+            { icon: 'trash-2', title: 'Descarte a água', text: 'Retire a água que ficou retida no Clever.' },
+            { icon: 'glass-water', title: 'Adicione a água', dynamic: () => {
+                const isCopo = waterUnitSelect.value === 'copo';
+                const label = isCopo ? 'copo(s) lagoinha' : 'ml';
+                const extraInfo = isCopo ? ` <span class="text-sm font-normal text-mocha-400 block mt-1">(aprox. ${Math.round(getWaterInMl())}ml)</span>` : '';
+                return `Coloque <span class="text-mocha-accent font-bold text-2xl mx-1">${waterInput.value || 0} ${label}</span> de água quente primeiro.${extraInfo}`;
+            }},
+            { icon: 'bean', title: 'Adicione o café', text: 'Despeje o café moído suavemente por cima da água. Não mexa!' },
+            { 
+                icon: 'timer', 
+                title: 'Aguarde a infusão', 
+                text: 'A extração perfeita leva tempo.',
+                hasTimer: true 
+            },
+            { icon: 'arrow-down-to-line', title: 'A extração', text: 'Coloque o Clever sobre a sua jarra ou caneca favorita para liberar o café.' },
+            { icon: 'heart', title: 'Tudo pronto!', text: 'Aproveite o seu café perfeito. ☕', isLast: true }
         ];
 
-        let currentStep = 0;
-        function renderCurrentStep(dir) {
+        const stepContent = document.getElementById('step-content');
+        const stepCounter = document.getElementById('step-counter');
+        const progressBar = document.getElementById('progress-bar');
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
+        const btnNextText = document.getElementById('btn-next-text');
+
+        // -- RENDERIZAÇÃO E NAVEGAÇÃO DO WIZARD --
+        function formatTime(seconds) {
+            const m = Math.floor(seconds / 60).toString().padStart(2, '0');
+            const s = (seconds % 60).toString().padStart(2, '0');
+            return `${m}:${s}`;
+        }
+
+        function renderCurrentStep(direction) {
             const step = steps[currentStep];
-            stepContent.innerHTML = `<div class="w-20 h-20 rounded-full bg-mocha-50 flex items-center justify-center text-mocha-accent mb-6"><i data-lucide="${step.icon}" class="w-10 h-10"></i></div><h3 class="text-2xl font-bold text-mocha-900 mb-3">${step.title}</h3><p class="text-mocha-600 text-lg leading-relaxed max-w-[280px]">${step.dynamic ? step.dynamic() : step.text}</p>`;
-            document.getElementById('step-counter').textContent = `Passo ${currentStep + 1} de ${steps.length}`;
+            const text = step.dynamic ? step.dynamic() : step.text;
+            
+            // Limpa o cronômetro se estivermos saindo do passo
+            clearInterval(timerInterval);
+            isTimerRunning = false;
+            timeLeft = 150;
+
+            stepContent.classList.remove('step-enter', 'step-enter-reverse');
+            void stepContent.offsetWidth; // Força repaint
+            stepContent.classList.add(direction === 'reverse' ? 'step-enter-reverse' : 'step-enter');
+
+            let customHtml = '';
+            
+            // HTML Customizado: Cronômetro
+            if(step.hasTimer) {
+                customHtml = `
+                    <div class="mt-4 flex flex-col items-center">
+                        <div id="timer-display" class="text-[2.5rem] font-bold text-mocha-800 mb-3 font-mono tracking-widest bg-mocha-50 py-2 px-6 rounded-2xl shadow-inner">${formatTime(timeLeft)}</div>
+                        <button id="timer-btn" class="bg-mocha-accent text-white px-6 py-2.5 rounded-full font-bold shadow-md hover:bg-mocha-600 active:scale-95 transition-all flex items-center gap-2">
+                            <i id="timer-icon" data-lucide="play" class="w-5 h-5"></i> <span id="timer-label">Iniciar</span>
+                        </button>
+                    </div>
+                `;
+            }
+
+            stepContent.innerHTML = `
+                <div class="w-20 h-20 rounded-full bg-mocha-50 flex items-center justify-center text-mocha-accent mb-6 shadow-inner transition-transform hover:scale-105">
+                    <i data-lucide="${step.icon}" class="w-10 h-10"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-mocha-900 mb-3">${step.title}</h3>
+                <p class="text-mocha-600 text-lg leading-relaxed max-w-[280px]">${text}</p>
+                ${customHtml}
+            `;
+            
+            // Lógica do Cronômetro Interativo
+            if(step.hasTimer) {
+                const tBtn = document.getElementById('timer-btn');
+                const tDisplay = document.getElementById('timer-display');
+                const tIcon = document.getElementById('timer-icon');
+                const tLabel = document.getElementById('timer-label');
+                
+                tBtn.addEventListener('click', () => {
+                    if(isTimerRunning) {
+                        clearInterval(timerInterval);
+                        isTimerRunning = false;
+                        tLabel.textContent = "Retomar";
+                        tIcon.setAttribute('data-lucide', 'play');
+                        tBtn.classList.replace('bg-mocha-800', 'bg-mocha-accent');
+                    } else {
+                        isTimerRunning = true;
+                        tLabel.textContent = "Pausar";
+                        tIcon.setAttribute('data-lucide', 'pause');
+                        tBtn.classList.replace('bg-mocha-accent', 'bg-mocha-800');
+                        
+                        timerInterval = setInterval(() => {
+                            if(timeLeft > 0) {
+                                timeLeft--;
+                                tDisplay.textContent = formatTime(timeLeft);
+                            } else {
+                                clearInterval(timerInterval);
+                                isTimerRunning = false;
+                                tLabel.textContent = "Pronto!";
+                                tBtn.classList.replace('bg-mocha-800', 'bg-green-600');
+                                tIcon.setAttribute('data-lucide', 'check');
+                                lucide.createIcons();
+                            }
+                        }, 1000);
+                    }
+                    lucide.createIcons();
+                });
+            }
+
+            // Confetti no Último Passo
+            if(step.isLast) {
+                confetti({
+                    particleCount: 150,
+                    spread: 80,
+                    origin: { y: 0.6 },
+                    colors: ['#D4A373', '#7e6f5f', '#3a332d', '#ffffff']
+                });
+            }
+            
+            stepCounter.textContent = `Passo ${currentStep + 1} de ${steps.length}`;
             progressBar.style.width = `${((currentStep + 1) / steps.length) * 100}%`;
+
             btnPrev.disabled = currentStep === 0;
-            const isLast = currentStep === steps.length - 1;
-            btnNextText.textContent = isLast ? 'Recomeçar' : 'Próximo';
-            btnNextIcon.setAttribute('data-lucide', isLast ? 'rotate-ccw' : 'chevron-right');
+            
+            if (currentStep === steps.length - 1) {
+                btnNextText.textContent = 'Recomeçar';
+                btnNext.classList.replace('bg-mocha-900', 'bg-mocha-accent');
+                btnNext.classList.replace('hover:bg-mocha-800', 'hover:bg-mocha-600');
+                document.getElementById('btn-next-icon').setAttribute('data-lucide', 'rotate-ccw');
+            } else {
+                btnNextText.textContent = 'Próximo';
+                btnNext.classList.replace('bg-mocha-accent', 'bg-mocha-900');
+                btnNext.classList.replace('hover:bg-mocha-600', 'hover:bg-mocha-800');
+                document.getElementById('btn-next-icon').setAttribute('data-lucide', 'chevron-right');
+            }
             lucide.createIcons();
         }
 
-        btnNext.addEventListener('click', () => { if (currentStep < steps.length - 1) { currentStep++; renderCurrentStep('forward'); } else { currentStep = 0; renderCurrentStep('reverse'); } });
-        btnPrev.addEventListener('click', () => { if (currentStep > 0) { currentStep--; renderCurrentStep('reverse'); } });
-        
-        let tx = 0;
-        document.addEventListener('touchstart', e => tx = e.changedTouches[0].screenX);
-        document.addEventListener('touchend', e => { let ex = e.changedTouches[0].screenX; if (ex < tx - 50) btnNext.click(); else if (ex > tx + 50 && currentStep > 0) btnPrev.click(); });
-        
-        window.onload = () => { renderCurrentStep('forward'); 
-            const imgEl = document.getElementById('hero-image'); imgEl.src = "https://images.unsplash.com/photo-1497935586351-b67a49e012bf?auto=format&fit=crop&q=80&w=800";
-            imgEl.onload = () => { imgEl.classList.remove('opacity-0'); document.getElementById('hero-skeleton').classList.add('hidden'); };
+        btnNext.addEventListener('click', () => {
+            if (currentStep < steps.length - 1) {
+                currentStep++;
+                renderCurrentStep('forward');
+            } else {
+                currentStep = 0;
+                renderCurrentStep('reverse');
+            }
+        });
+
+        btnPrev.addEventListener('click', () => {
+            if (currentStep > 0) {
+                currentStep--;
+                renderCurrentStep('reverse');
+            }
+        });
+
+        // -- GESTOS DE SWIPE --
+        let touchStartX = 0;
+        let touchEndX = 0;
+        const wizardSection = document.getElementById('wizard-section');
+
+        wizardSection.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, {passive: true});
+
+        wizardSection.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, {passive: true});
+
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            if (touchEndX < touchStartX - swipeThreshold) {
+                // Deslize para a esquerda
+                btnNext.click();
+            }
+            if (touchEndX > touchStartX + swipeThreshold) {
+                // Deslize para a direita
+                if(currentStep > 0) btnPrev.click();
+            }
+        }
+
+        // --- CARREGAMENTO DA IMAGEM ---
+        function loadHeroImage() {
+            // Como as IAs frequentemente confundem o Clever Dripper com o Hario V60 (cônico),
+            // removemos a geração por IA e substituímos por uma bela imagem fixa focada nos grãos e no café.
+            // Isso garante que não mostramos o equipamento errado para ela!
+            const heroImageUrl = "https://images.unsplash.com/photo-1447933601403-0c6688de566e?auto=format&fit=crop&q=80&w=800";
+            
+            const imgEl = document.getElementById('hero-image');
+            imgEl.src = heroImageUrl;
+            imgEl.onload = () => {
+                imgEl.classList.remove('opacity-0');
+                document.getElementById('hero-skeleton').classList.add('hidden');
+            };
+        }
+
+        // Inicializar a aplicação
+        window.onload = () => {
+            renderCurrentStep('forward');
+            loadHeroImage();
         };
+
     </script>
 </body>
 </html>
